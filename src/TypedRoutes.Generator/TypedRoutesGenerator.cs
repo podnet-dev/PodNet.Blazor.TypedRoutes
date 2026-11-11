@@ -55,7 +55,9 @@ public class TypedRoutesGenerator : IIncrementalGenerator
             .SelectMany(static (routePairs, _) => routePairs.Left.Concat(routePairs.Right)
                 .ToLookup(static e => (e.Namespace, e.ClassName), static e => e.RouteTemplates)
                 .Select(static e => new PageInfo(e.Key.Namespace, e.Key.ClassName, e
-                    .SelectMany(static ts => ts.Select(static t => new Route(t, s_routeParameters.Matches(t).Cast<Match>().Select(static m => new RouteParameter(m.Groups["type"].Value is { Length: > 0 } t ? t : "string", m.Groups["name"].Value, m.Groups["catchall"].Success, m.Groups["optional"].Success)).ToImmutableArray())))
+                    .SelectMany(static ts => ts)
+                    .Distinct()
+                    .Select(static t => new Route(t, s_routeParameters.Matches(t).Cast<Match>().Select(static m => new RouteParameter(m.Groups["type"].Value is { Length: > 0 } t ? t : "string", m.Groups["name"].Value, m.Groups["catchall"].Success, m.Groups["optional"].Success)).ToImmutableArray()))
                     .ToImmutableArray())));
 
         context.RegisterSourceOutput(pages, GenerateSourceOutput);
