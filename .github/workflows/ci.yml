@@ -1,0 +1,11 @@
+name: Package checks
+on: { push: { branches: [main] }, pull_request: {} }
+permissions: { contents: read }
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: podnet-dev/pod-nugetizer@v2
+        with:
+          stages: checkout setup test pack integration
+          version: 0.1.0-ci.${{ github.run_id }}

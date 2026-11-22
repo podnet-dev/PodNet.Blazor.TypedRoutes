@@ -48,8 +48,8 @@
         {
             if (component.FullName == null)
                 return null;
-            var razorStream = GetType().Assembly.GetManifestResourceStream($"{component.FullName}.razor");
-            var generatedStream = GetType().Assembly.GetManifestResourceStream($"PodNet.Blazor.TypedRoutes.Sample.Generated.PodNet.Blazor.TypedRoutes.Generator.PodNet.Blazor.TypedRoutes.Generator.TypedRoutesGenerator.{component.FullName.Replace('.', '_')}.g.cs");
+            using var razorStream = component.Assembly.GetManifestResourceStream($"Razor.{component.Name}.razor");
+            using var generatedStream = component.Assembly.GetManifestResourceStream($"Snapshots.{component.Name}.g.cs");
             var relativeName = component.FullName.Split("PodNet.Blazor.TypedRoutes.Sample.").ElementAtOrDefault(1);
             if (razorStream == null || generatedStream == null || string.IsNullOrWhiteSpace(relativeName))
                 return null;

@@ -4,29 +4,22 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<RestoreAdditionalProjectSources>$(ArtifactsPath)\package</RestoreAdditionalProjectSources>
-		<!-- We emit the files into the Generated folder instead of letting the compiler pick them up from a temp folder. This is only so that the demo works and shows the files being generated. -->
+		<RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);$(ArtifactsPath)/package/$(Configuration.ToLowerInvariant())</RestoreAdditionalProjectSources>
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-		<CompilerGeneratedFilesOutputPath>Generated</CompilerGeneratedFilesOutputPath>
 
 		<!-- This is only an "offline" demo project. You shouldn't publish this anywhere. If you do, re-enable security auditing. -->
 		<NuGetAudit>false</NuGetAudit>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="Generated\**" />
-		<EmbeddedResource Include="Pages\**" />
-		<EmbeddedResource Include="Generated\**" />
+		<Compile Remove="Snapshots\**\*.g.cs" />
+		<EmbeddedResource Include="Pages\**\*.razor" LogicalName="Razor.%(Filename)%(Extension)" WithCulture="false" />
+		<EmbeddedResource Include="Snapshots\*.g.cs" LogicalName="Snapshots.%(Filename)%(Extension)" WithCulture="false" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
 
 		<!-- This is a reference to the local package. To reference the live package, use the publicly available version at https://www.nuget.org/packages/PodNet.Blazor.TypedRoutes/ -->
-		<PackageReference Include="PodNet.Blazor.TypedRoutes" Version="[0.0.0-debug]" />
+		<PackageReference Include="PodNet.Blazor.TypedRoutes" Version="[$(PackageUnderTestVersion)]" />
 	</ItemGroup>
-
-	<Target Name="CleanGeneratedFolder" BeforeTargets="Restore;Clean">
-		<RemoveDir Directories="Generated" />
-		<MakeDir Directories="Generated" />
-	</Target>
 </Project>

@@ -11,6 +11,13 @@ namespace PodNet.Blazor.TypedRoutes.IntegrationTests;
 public class IntegrationTest
 {
     [TestMethod]
+    public void SinglePageDirectiveProducesOneUnnumberedUriFactory()
+    {
+        CollectionAssert.AreEqual(new[] { "/person/{PersonId:int}" }, Cases.Person.AllPageRouteTemplates.ToArray());
+        Assert.AreEqual("/person/42", Cases.Person.PageUri(42));
+    }
+
+    [TestMethod]
     public void DefaultHappyPathWorks()
     {
         Assert.AreEqual("/singleroute", Cases.SingleRoute.PageUri);

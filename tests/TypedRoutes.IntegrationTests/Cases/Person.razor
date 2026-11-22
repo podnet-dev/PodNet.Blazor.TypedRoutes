@@ -1,0 +1,6 @@
+@page "/person/{PersonId:int}"
+
+@code {
+    [Microsoft.AspNetCore.Components.Parameter] public int PersonId { get; set; }
+    public string Link => Person.PageUri(PersonId);
+}

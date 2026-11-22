@@ -171,10 +171,9 @@ Notice the following:
 
 ### Additional examples
 
-You can find additional examples in the [TypedRoutes.Sample](https://github.com/podNET-Hungary/PodNet.Blazor.TypedRoutes/tree/main/src/TypedRoutes.Sample) project.
+The [TypedRoutes.Sample](sample/TypedRoutes.Sample) project displays each [Razor page](sample/TypedRoutes.Sample/Pages) alongside a [readable snapshot of its generated routes](sample/TypedRoutes.Sample/Snapshots). The snapshots are embedded as text, not compiled. A normal build neither updates nor deletes them.
 
-You can simply clone the repo and test your scenario by adding/modifying components and routes to this project. Keep in mind, however, that this differs in a few key points from installing via NuGet:
-- The demo project is set to write all source generated code to the [Generated](https://github.com/podNET-Hungary/PodNet.Blazor.TypedRoutes/tree/main/src/TypedRoutes.Sample/Generated) folder. It is a good idea to delete the folder before doing a build this way to avoid any leftover files. This is only so that it is convenient to see the result of the generation on GitHub. It is not advised to store generated content this way in source control in app dev projects.
+To verify or refresh a snapshot, build the sample against the candidate package specified by `PackageUnderTestVersion`, using the same configuration in which the package was packed. Find the component’s `.g.cs` file under `$(IntermediateOutputPath)/generated/` in the `TypedRoutesGenerator` output (not the Razor generator output). Compare it with `sample/TypedRoutes.Sample/Snapshots/<component>.g.cs`. Copy it over only if the change is intended, review the diff, then rebuild the sample to embed the updated text.
 
 ### Extensibility overview
 
