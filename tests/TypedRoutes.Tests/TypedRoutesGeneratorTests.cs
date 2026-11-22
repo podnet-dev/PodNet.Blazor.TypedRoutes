@@ -16,3 +16,4 @@ namespace PodNet.Blazor.TypedRoutes.Tests;
 [TestClass] public class _7_TypeParameters_4_ClassWithMultipleAndConstraints() : TypedRoutesGeneratorTestCase<Cases._7_TypeParameters._4_ClassWithMultipleAndConstraints>(true);
 [TestClass] public class _7_TypeParameters_5_MultipleWithConstraints() : TypedRoutesGeneratorTestCase<Cases._7_TypeParameters._5_MultipleWithConstraints>(true);
 [TestClass] public class _8_RouteConstraints() : TypedRoutesGeneratorTestCase<Cases._8_RouteConstraints>(true);
+[TestClass] public class _9_RazorDeclarationDuplicatesPageDirective() : TypedRoutesGeneratorTestCase<Cases._9_RazorDeclarationDuplicatesPageDirective>(true);
