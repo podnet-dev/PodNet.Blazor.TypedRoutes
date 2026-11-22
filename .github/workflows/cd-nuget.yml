@@ -1,30 +1,8 @@
-on: { push: { tags: ['v[0-9]+.[0-9]+.[0-9]+*'] }, workflow_dispatch: {} }
+on: { push: { tags: ['v[0-9]+.[0-9]+.[0-9]+*'] } }
 jobs:
   publish:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions: { contents: write, id-token: write }
     steps:
       - uses: podnet-dev/pod-nugetizer@v2
         env: { NUGET_USER: '${{ secrets.NUGET_USER }}' }
-  recover-101:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    permissions: { actions: read, contents: write, id-token: write }
-    env: { GH_TOKEN: '${{ github.token }}', GH_REPO: '${{ github.repository }}' }
-    steps:
-      - name: Recover verified tag-run assets
-        run: |
-          set -euo pipefail
-          gh run download 45026934865 -n nuget-45026934865-1 -D bundle
-          cd bundle
-          echo 'c0399018129ad37a0a49148725c785cd2864a8874d985888646f358e68541d73  PodNet.Blazor.TypedRoutes.1.0.1.nupkg' | sha256sum -c
-          echo 'dad60179ae73eb83f72d0204878a6754432d34bd79f3e8eea9f540907a369942  PodNet.Blazor.TypedRoutes.1.0.1.snupkg' | sha256sum -c
-      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841
-        id: login
-        with: { user: '${{ secrets.NUGET_USER }}' }
-      - name: Push verified package and adjacent symbols
-        env: { NUGET_KEY: '${{ steps.login.outputs.NUGET_API_KEY }}' }
-        run: dotnet nuget push bundle/PodNet.Blazor.TypedRoutes.1.0.1.nupkg --api-key "$NUGET_KEY" --source https://api.nuget.org/v3/index.json
-      - name: Publish release for the original tag
-        run: gh release create v1.0.1 --verify-tag --title 'TypedRoutes 1.0.1' --notes 'Fix duplicate route discovery on .NET SDK 11 (#2). Thanks to @NielsUll.' bundle/PodNet.Blazor.TypedRoutes.1.0.1.nupkg bundle/PodNet.Blazor.TypedRoutes.1.0.1.snupkg bundle/manifest.json
